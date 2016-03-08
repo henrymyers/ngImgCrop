@@ -2,10 +2,10 @@
  * ngImgCrop v0.3.2
  * https://github.com/alexk111/ngImgCrop
  *
- * Copyright (c) 2014 Alex Kaul
+ * Copyright (c) 2016 Alex Kaul
  * License: MIT
  *
- * Generated at Wednesday, December 3rd, 2014, 3:54:12 PM
+ * Generated at Tuesday, March 8th, 2016, 1:39:03 PM
  */
 (function() {
 'use strict';
@@ -1402,6 +1402,9 @@ crop.factory('cropHost', ['$document', 'cropAreaCircle', 'cropAreaSquare', 'crop
     var minCanvasDims=[100,100],
         maxCanvasDims=[300,300];
 
+    // Should we limit the resulting image size?
+    var limitResImgSize=true;
+
     // Result Image size
     var resImgSize=200;
 
@@ -1531,14 +1534,21 @@ crop.factory('cropHost', ['$document', 'cropAreaCircle', 'cropAreaSquare', 'crop
       }
     };
 
+    function getUnrestrainedSize() {
+      var maxResImgSize = Math.min(image.width, image.height),
+          cropRatio = theArea.getSize() / Math.min(ctx.canvas.width, ctx.canvas.height);
+      return maxResImgSize * cropRatio;
+    }
+
     this.getResultImageDataURI=function() {
-      var temp_ctx, temp_canvas;
+      var temp_ctx, temp_canvas, outputSize;
+      outputSize = (!limitResImgSize && image) ? getUnrestrainedSize() : resImgSize;
       temp_canvas = angular.element('<canvas></canvas>')[0];
       temp_ctx = temp_canvas.getContext('2d');
-      temp_canvas.width = resImgSize;
-      temp_canvas.height = resImgSize;
+      temp_canvas.width = outputSize;
+      temp_canvas.height = outputSize;
       if(image!==null){
-        temp_ctx.drawImage(image, (theArea.getX()-theArea.getSize()/2)*(image.width/ctx.canvas.width), (theArea.getY()-theArea.getSize()/2)*(image.height/ctx.canvas.height), theArea.getSize()*(image.width/ctx.canvas.width), theArea.getSize()*(image.height/ctx.canvas.height), 0, 0, resImgSize, resImgSize);
+        temp_ctx.drawImage(image, (theArea.getX()-theArea.getSize()/2)*(image.width/ctx.canvas.width), (theArea.getY()-theArea.getSize()/2)*(image.height/ctx.canvas.height), theArea.getSize()*(image.width/ctx.canvas.width), theArea.getSize()*(image.height/ctx.canvas.height), 0, 0, outputSize, outputSize);
       }
       if (resImgQuality!==null ){
         return temp_canvas.toDataURL(resImgFormat, resImgQuality);
@@ -1658,9 +1668,14 @@ crop.factory('cropHost', ['$document', 'cropAreaCircle', 'cropAreaSquare', 'crop
     };
 
     this.setResultImageSize=function(size) {
-      size=parseInt(size,10);
-      if(!isNaN(size)) {
-        resImgSize=size;
+      if (size === 'auto') {
+        limitResImgSize = false;
+      } else {
+        limitResImgSize = true;
+        size=parseInt(size,10);
+        if(!isNaN(size)) {
+          resImgSize=size;
+        }
       }
     };
 
