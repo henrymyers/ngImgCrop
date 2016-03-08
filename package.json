@@ -1,18 +1,21 @@
 {
-  "author": {
+  "author": [{
     "name": "Alex Kaul",
     "email": "alexkaul@googlemail.com"
-  },
-  "name": "ng-img-crop",
-  "prettyName": "ngImgCrop",
-  "version": "0.3.2",
-  "description": "Image crop directive for AngularJS",
+  }, {
+    "name": "Henry Myers",
+    "email": "git@henrymyers.com"
+  }],
+  "name": "ng-img-crop-tweaked",
+  "prettyName": "ngImgCropTweaked",
+  "version": "0.3.3",
+  "description": "A lightly tweaked fork of Alex Kaul's image crop directive for AngularJS. Adds Browserify support & automatic image output size.",
   "license": "MIT",
-  "homepage": "https://github.com/alexk111/ngImgCrop",
+  "homepage": "https://github.com/henrymyers/ngImgCrop",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/alexk111/ngImgCrop.git"
+    "url": "https://github.com/henrymyers/ngImgCrop.git"
   },
   "dependencies": {},
   "devDependencies": {

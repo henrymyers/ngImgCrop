@@ -52,7 +52,7 @@ var Config = {
                 ' * ' + pkg.prettyName + ' v' + pkg.version + '\n' +
                 ' * ' + pkg.homepage + '\n' +
                 ' *\n' +
-                ' * Copyright (c) ' + (today.getFullYear()) + ' ' + pkg.author.name +'\n' +
+                ' * Copyright (c) ' + (today.getFullYear()) + ' ' + pkg.author.map(function (author) {return author.name}).join(', ') +'\n' +
                 ' * License: ' + pkg.license + '\n' +
                 ' *\n' +
                 ' * Generated at ' + gutil.date(today, 'dddd, mmmm dS, yyyy, h:MM:ss TT') + '\n' +
@@ -83,7 +83,7 @@ gulp.task('scripts', function(){
       Config.paths.source.js + '/classes/*.js',
       Config.paths.source.js + '/ng-img-crop.js'
     ])
-    .pipe(concat(pkg.name+'.js', {
+    .pipe(concat('ng-img-crop.js', {
       separator: '\n\n',
       process: function(src) {
         // Remove all 'use strict'; from the code and
