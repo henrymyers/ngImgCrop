@@ -5,7 +5,9 @@
   <script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
   <!--<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular.min.js"></script>-->
   <script type="text/javascript" src="../compile/unminified/ng-img-crop.js"></script>
+  <link rel="stylesheet" href="../node_modules/skeleton-css/css/normalize.css"/>
   <link rel="stylesheet" href="../compile/unminified/ng-img-crop.css"/>
+  <link rel="stylesheet" href="../node_modules/skeleton-css/css/skeleton.css"/>
   <style>
     .cropArea {
       background: #E4E4E4;
@@ -24,68 +26,111 @@
       width:300px;
       height:200px;
     }
+    .content-block {
+      margin-top: 2rem;
+      border-top: 3px solid #eee;
+      padding-top: 2rem;
+    }
   </style>
 </head>
 <body ng-controller="Ctrl">
-  <div>
-    <label><input type="checkbox" ng-model="enableCrop" ng-init="enableCrop=true"/> Add ngImgCrop to Page</label>
-  </div>
-  <div>
-    Container size:
-    <label><input type="radio" ng-model="size" value="big" /> Big</label>
-    <label><input type="radio" ng-model="size" value="medium" /> Medium</label>
-    <label><input type="radio" ng-model="size" value="small" /> Small</label>
-  </div>
-  <div>
-    Area type:
-    <label><input type="radio" ng-model="type" value="circle" /> Circle</label>
-    <label><input type="radio" ng-model="type" value="square" /> Square</label>
-    <!--<label><input type="radio" ng-model="type" value="rectangle" /> Rectangle</label>-->
-  </div>
-  <div>
-    <label><input type="checkbox" ng-model="changeOnFly" /> Change On Fly</label>
-  </div>
-  <!--
-  <div>
-    <label>Aspect Ratio: <input type="text" ng-model="aspectRatio" /></label>
-  </div>
-  -->
-  <div>
-    <label>Area Min Size (Size = Width = Height): <input type="text" ng-model="selMinSize" /></label>
-  </div>
-  <div>
-    <label>Result Image Size (Size = Width = Height): <input type="text" ng-model="resImgSize" /></label>
-  </div>
-  <div>
-    <label>Image Overlay Color (hex or rgb): <input type="text" ng-model="overlayColor" /></label>
-  </div>
-  <div>
-    <label>Image Overlay Opacity (0<=X<=1): <input type="text" ng-model="overlayOpacity" /></label>
-  </div>
-  <div>
-    Result Image Format:
-    <label><input type="radio" ng-model="resImgFormat" value="image/jpeg" /> image/jpeg</label>
-    <label><input type="radio" ng-model="resImgFormat" value="image/png" /> image/png</label>
-    <label><input type="radio" ng-model="resImgFormat" value="image/webp" /> image/webp</label>
-  </div>
-  <div>
-    <label>Result Image Quality (0<=X<=1): <input type="text" ng-model="resImgQuality" /></label>
-  </div>
-  <form ng-show="enableCrop">
-    <label for="fileInput">Select Image:</label>
-    <input type="file" id="fileInput" />
-    <button type="reset">Clear</button>
-    <button ng-click="imageDataURI='test.jpg'">Set Test Image</button>
-  </form>
-  <div>
-    <label>Image URL: <input type="text" ng-model="edtImageURI" /></label>
-    <button ng-click="imageDataURI=edtImageURI">Set Image</button>
-  </div>
-  <div>
-    <button ng-click="imageDataURI=''">Reset Image</button>
+
+<div class="container">
+
+  <div class="options">
+
+    <h4>Options</h4>
+
+    <div class="row">
+      <div class="four columns" title="The size of the demo container">
+        <label>Container size</label>
+        <select class="u-full-width" ng-model="size">
+          <option value="small">Small</option>
+          <option value="medium">Medium</option>
+          <option value="big">Big</option>
+        </select>
+      </div>
+
+      <div class="four columns" title="The crop area's shape">
+        <label>Area Type</label>
+        <select class="u-full-width" ng-model="type">
+          <option value="circle">Circle</option>
+          <option value="square">Square</option>
+        </select>
+      </div>
+
+      <div class="four columns" title="The crop area's minimum width and height">
+        <label>Area Min Size</label>
+        <input class="u-full-width" type="text" ng-model="selMinSize" />
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="four columns" title="The resulting image's width & height in px, or the value 'auto'">
+        <label>Result Size</label>
+        <input class="u-full-width" type="text" ng-model="resImgSize" />
+      </div>
+
+      <div class="four columns" title="The resulting image's quality (0 <= x <= 1)">
+        <label>Result Quality</label>
+        <input class="u-full-width" type="text" ng-model="resImgQuality" />
+      </div>
+
+      <div class="four columns">
+        <label>Result Format</label>
+        <select class="u-full-width" ng-model="resImgFormat">
+          <option value="image/jpeg">image/jpeg</option>
+          <option value="image/png">image/png</option>
+          <option value="image/webp">image/webp</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="four columns" title="Color of the overlay covering the discarded part of the image (hex or rgb)">
+        <label>Overlay Color</label>
+        <input class="u-full-width" type="text" ng-model="overlayColor" />
+      </div>
+
+      <div class="four columns" title="Opacity of the overlay covering the discarded part of the image (0 <= x <= 1)">
+        <label>Overlay Opacity</label>
+        <input class="u-full-width" type="text" ng-model="overlayOpacity" />
+      </div>
+
+      <div class="four columns" title="Opacity of the overlay covering the discarded part of the image (0 <= x <= 1)">
+        <label>Change on the fly</label>
+        <button ng-show="changeOnFly" class="button-primary u-full-width" ng-click="changeOnFly=false;">True</button>
+        <button ng-show="!changeOnFly" class="u-full-width" ng-click="changeOnFly=true;">False</button>
+      </div>
+    </div>
   </div>
 
-  <div ng-if="enableCrop" class="cropArea" ng-class="{'big':size=='big', 'medium':size=='medium', 'small':size=='small'}">
+
+
+  <form class="content-block">
+    <div class="row">
+      <h4 class="u-pull-left">Image</h4>
+      <button class="button-primary u-pull-right" ng-click="imageDataURI=''">Clear</button>
+    </div>
+
+    <div class="row">
+      <div class="four columns">
+        <label class="button u-full-width" for="fileInput">Upload Image</label><input class="ng-hide" type="file" id="fileInput" />
+      </div>
+
+      <div class="four columns">
+        <button class="u-full-width" ng-click="inputImageUrl()">Enter URL</button>
+      </div>
+
+      <div class="four columns">
+        <button class="u-full-width" ng-click="imageDataURI='test.jpg'">Use Sample</button>
+      </div>
+    </div>
+  </form>
+
+
+  <div ng-if="imageDataURI" class="cropArea" ng-class="{'big':size=='big', 'medium':size=='medium', 'small':size=='small'}">
     <img-crop image="imageDataURI"
               result-image="$parent.resImageDataURI"
               change-on-fly="changeOnFly"
@@ -101,15 +146,15 @@
               on-load-done="onLoadDone()"
               on-load-error="onLoadError()"
     ></img-crop>
-              <!--aspect-ratio="aspectRatio"-->
   </div>
 
-  <div style="text-align:center">
-    <h3>Result</h3>
-    <div>
-      <img ng-src="{{resImageDataURI}}" />
-    </div>
+  <div class="content-block" ng-if="imageDataURI && resImageDataURI">
+    <h4>Result</h4>
+    <img ng-src="{{resImageDataURI}}" />
   </div>
+
+</div>
+
 
   <script type="text/javascript">
     angular.module('app', ['ngImgCrop'])
@@ -135,6 +180,12 @@
         $scope.onLoadError=function() {
           console.log('onLoadError fired');
         };
+        $scope.inputImageUrl=function() {
+          var input = window.prompt('Enter the image URL');
+          if (input) {
+            $scope.imageDataURI = input;
+          }
+        };
         var handleFileSelect=function(evt) {
           var file=evt.currentTarget.files[0];
           var reader = new FileReader();
@@ -151,5 +202,6 @@
         });
       });
   </script>
+
 </body>
 </html>

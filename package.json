@@ -39,6 +39,7 @@
     "jshint-stylish": "^0.2.0",
     "minimist": "^0.2.0",
     "opn": "^0.1.2",
+    "skeleton-css": "2.0.4",
     "tiny-lr": "0.0.7"
   }
 }
