@@ -8,7 +8,7 @@
   }],
   "name": "ng-img-crop-tweaked",
   "prettyName": "ngImgCropTweaked",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "A lightly tweaked fork of Alex Kaul's image crop directive for AngularJS. Adds Browserify support & automatic image output size.",
   "license": "MIT",
   "homepage": "https://github.com/henrymyers/ngImgCropTweaked",
