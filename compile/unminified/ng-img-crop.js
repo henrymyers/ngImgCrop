@@ -5,7 +5,7 @@
  * Copyright (c) 2016 Alex Kaul, Henry Myers
  * License: MIT
  *
- * Generated at Tuesday, March 8th, 2016, 4:04:58 PM
+ * Generated at Wednesday, March 9th, 2016, 9:27:17 AM
  */
 (function() {
 'use strict';
@@ -1414,6 +1414,10 @@ crop.factory('cropHost', ['$document', 'cropAreaCircle', 'cropAreaSquare', 'crop
     // Result Image quality
     var resImgQuality=null;
 
+    // Overlay
+    var overlayColor='#000';
+    var overlayOpacity=0.65;
+
     /* PRIVATE FUNCTIONS */
 
     // Draw Scene
@@ -1428,7 +1432,8 @@ crop.factory('cropHost', ['$document', 'cropAreaCircle', 'cropAreaSquare', 'crop
         ctx.save();
 
         // and make it darker
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.65)';
+        ctx.globalAlpha = overlayOpacity;
+        ctx.fillStyle = overlayColor;
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
         ctx.restore();
@@ -1690,6 +1695,17 @@ crop.factory('cropHost', ['$document', 'cropAreaCircle', 'cropAreaSquare', 'crop
       }
     };
 
+    this.setOverlayColor=function(color){
+      overlayColor = color;
+    };
+
+    this.setOverlayOpacity=function(opacity){
+      opacity = parseFloat(opacity);
+      if (!isNaN(opacity) && opacity>=0 && opacity<=1){
+        overlayOpacity = opacity;
+      }
+    };
+
     this.setAreaType=function(type) {
       var curSize=theArea.getSize(),
           curMinSize=theArea.getMinSize(),
@@ -1785,6 +1801,8 @@ crop.directive('imgCrop', ['$timeout', 'cropHost', 'cropPubSub', function($timeo
       resultImageSize: '=',
       resultImageFormat: '@',
       resultImageQuality: '=',
+      overlayColor: '=',
+      overlayOpacity: '=',
 
       onChange: '&',
       onLoadBegin: '&',
@@ -1869,6 +1887,14 @@ crop.directive('imgCrop', ['$timeout', 'cropHost', 'cropPubSub', function($timeo
       });
       scope.$watch('resultImageQuality',function(){
         cropHost.setResultImageQuality(scope.resultImageQuality);
+        updateResultImage(scope);
+      });
+      scope.$watch('overlayColor',function(){
+        cropHost.setOverlayColor(scope.overlayColor);
+        updateResultImage(scope);
+      });
+      scope.$watch('overlayOpacity',function(){
+        cropHost.setOverlayOpacity(scope.overlayOpacity);
         updateResultImage(scope);
       });
 

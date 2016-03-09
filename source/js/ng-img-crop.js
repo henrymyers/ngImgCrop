@@ -13,6 +13,8 @@ crop.directive('imgCrop', ['$timeout', 'cropHost', 'cropPubSub', function($timeo
       resultImageSize: '=',
       resultImageFormat: '@',
       resultImageQuality: '=',
+      overlayColor: '=',
+      overlayOpacity: '=',
 
       onChange: '&',
       onLoadBegin: '&',
@@ -97,6 +99,14 @@ crop.directive('imgCrop', ['$timeout', 'cropHost', 'cropPubSub', function($timeo
       });
       scope.$watch('resultImageQuality',function(){
         cropHost.setResultImageQuality(scope.resultImageQuality);
+        updateResultImage(scope);
+      });
+      scope.$watch('overlayColor',function(){
+        cropHost.setOverlayColor(scope.overlayColor);
+        updateResultImage(scope);
+      });
+      scope.$watch('overlayOpacity',function(){
+        cropHost.setOverlayOpacity(scope.overlayOpacity);
         updateResultImage(scope);
       });
 

@@ -46,6 +46,10 @@ crop.factory('cropHost', ['$document', 'cropAreaCircle', 'cropAreaSquare', 'crop
     // Result Image quality
     var resImgQuality=null;
 
+    // Overlay
+    var overlayColor='#000';
+    var overlayOpacity=0.65;
+
     /* PRIVATE FUNCTIONS */
 
     // Draw Scene
@@ -60,7 +64,8 @@ crop.factory('cropHost', ['$document', 'cropAreaCircle', 'cropAreaSquare', 'crop
         ctx.save();
 
         // and make it darker
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.65)';
+        ctx.globalAlpha = overlayOpacity;
+        ctx.fillStyle = overlayColor;
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
         ctx.restore();
@@ -320,6 +325,17 @@ crop.factory('cropHost', ['$document', 'cropAreaCircle', 'cropAreaSquare', 'crop
       quality = parseFloat(quality);
       if (!isNaN(quality) && quality>=0 && quality<=1){
         resImgQuality = quality;
+      }
+    };
+
+    this.setOverlayColor=function(color){
+      overlayColor = color;
+    };
+
+    this.setOverlayOpacity=function(opacity){
+      opacity = parseFloat(opacity);
+      if (!isNaN(opacity) && opacity>=0 && opacity<=1){
+        overlayOpacity = opacity;
       }
     };
 
